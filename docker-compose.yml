@@ -1,0 +1,12 @@
+version: '3'
+services:
+  task1:
+    build: ./main
+    image: task1
+    container_name: task1
+    tty: true
+    stdin_open: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./main:/go/src/app
