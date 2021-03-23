@@ -29,20 +29,22 @@ func main() {
 }
 
 func mainHandler(w http.ResponseWriter, r *http.Request) {
-	const ip string = "10.0.0.1:"
+	const ip string = "172.16.238.3:"
 	tpl := template.Must(template.ParseFiles("template/index.html"))
 
 	// 朝７時から夜７時の間の広告
 	Banner := "http://placehold.jp/150x50.png" 
 
 	nowHour := time.Now().Hour()
+	isSpecificIP := strings.Contains(GetIP(r), ip)
+	if(isSpecificIP==true) { fmt.Println("特定のIPアドレスからのアクセスが来ました") }
 	// 特定のIPアドレスからのアクセス or 夜７時から朝７時の間の広告
-	if strings.Contains(GetIP(r), ip) || nowHour < 7 || nowHour >= 19 {
+	if isSpecificIP || nowHour < 7 || nowHour >= 19 {
 		Banner = "http://placehold.jp/300x150.png"
 	}
 
-	fmt.Println("nowBanner: "+Banner)
-	fmt.Println("GetIP(r): "+GetIP(r))
+	// fmt.Println("nowBanner: "+Banner)
+	// fmt.Println("GetIP(r): "+GetIP(r))
 	
 	err := tpl.Execute(w, Banner)
 	if  err != nil {
