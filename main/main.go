@@ -36,7 +36,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 	Banner := "http://placehold.jp/150x50.png" 
 
 	nowHour := time.Now().Hour()
-	isSpecificIP := strings.Contains(GetIP(r), ip)
+	isSpecificIP := strings.Contains(getIP(r), ip)
 	if(isSpecificIP==true) { fmt.Println("特定のIPアドレスからのアクセスが来ました") }
 	// 特定のIPアドレスからのアクセス or 夜７時から朝７時の間の広告
 	if isSpecificIP || nowHour < 7 || nowHour >= 19 {
@@ -44,7 +44,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// fmt.Println("nowBanner: "+Banner)
-	// fmt.Println("GetIP(r): "+GetIP(r))
+	// fmt.Println("getIP(r): "+getIP(r))
 	
 	err := tpl.Execute(w, Banner)
 	if  err != nil {
@@ -53,7 +53,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // IPアドレスの取得
-func GetIP(r *http.Request) string {
+func getIP(r *http.Request) string {
 	forwarded := r.Header.Get("X-FORWARDED-FOR")
 	if forwarded != "" {
 		return forwarded
